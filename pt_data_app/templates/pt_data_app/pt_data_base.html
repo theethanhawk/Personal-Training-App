@@ -1,0 +1,13 @@
+<h1>Dashboard</h1>
+
+<p>
+    <a href="{% url 'workout_hub_app:workouts' %}">Train</a> -
+    <a href="{% url 'pt_programs_app:programs' %}">Programs</a> -
+    <a href="{% url 'pt_data_app:data' %}">Data</a> -
+    <a href="{% url 'dashboard_app:dashboard' %}">Dashboard</a> -
+    <a href="{% url 'goals_app:goals' %}">Goals</a> -
+    <a href="{% url 'health_metrics_app:metrics' %}">Metrics</a> -
+    <a>Sign In</a>
+</p>
+
+{% block content %}{% endblock content %}

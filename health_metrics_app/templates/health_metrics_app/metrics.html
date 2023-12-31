@@ -1,0 +1,12 @@
+{% extends "health_metrics_app/metrics_base.html" %}
+
+{% block content %}
+
+<p>
+    <a href="{% url 'health_metrics_app:add_health_metrics_dashboard' %}">Add Metrics</a> -
+    <a href="{% url 'health_metrics_app:health_metrics_dashboard' %}">Metrics Dashboard</a>
+</p>
+
+
+
+{% endblock content %}

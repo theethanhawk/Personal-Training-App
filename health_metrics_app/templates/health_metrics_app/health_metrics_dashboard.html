@@ -1,0 +1,75 @@
+{% extends "health_metrics_app/metrics_base.html" %}
+
+{% block content %}
+
+<p>
+    <a href="{% url 'health_metrics_app:add_health_metrics_dashboard' %}">Add Metrics</a> -
+    <a href="{% url 'health_metrics_app:health_metrics_dashboard' %}">Metrics Dashboard</a>
+</p>
+
+<div class="metrics-container">
+    <div class="metric-section">
+        <h2>Morning Metrics</h2>
+
+        <h3>Morning HeartRate Data</h3>
+        {% for rate in morning_heart_rate_data %}
+        <div>
+            <p>{{ rate.rate }}bpm on {{ rate.date|date:"M. d, Y" }}</p>
+        </div>
+        {% endfor %}
+
+        <h3>Hours Slept Data</h3>
+        {% for hours in sleep_hours_data %}
+        <div>
+            <p>{{ hours.hours }} hours of sleep on {{ hours.date|date:"M. d, Y" }}</p>
+        </div>
+        {% endfor %}
+
+        <h3>Sleep Quality Data</h3>
+        {% for quality in sleep_qualities %}
+            <div>{{ quality.get_quality_display }} on {{ quality.date }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="metric-section">
+        <h2>End of Day Metrics</h2>
+
+        <h3>ScreenTime Data</h3>
+        {% for time in screentime_data %}
+        <div>
+            <p>{{ time.time }} hours of screen time on {{ time.date|date:"M. d, Y" }}</p>
+        </div>
+        {% endfor %}
+
+        <h3>Diet Quality Data</h3>
+        {% for quality in diet_quality_data %}
+            <div>{{ quality.get_quality_display }} on {{ quality.date }} </div>
+        {% endfor %}
+
+        <h3>Mobility Work Data</h3>
+        {% for mobility in mobility_data %}
+            <div>
+                {% if mobility.completed %}
+                    Completed
+                {% else %}
+                    Not completed
+                {% endif %}
+                on {{ mobility.date }} 
+            </div>
+        {% endfor %}
+
+        <h3>Cold Exposure Data</h3>
+        {% for exposure in cold_exposures %}
+            <div>
+                {% if exposure.exposed %}
+                    Yes
+                {% else %}
+                    No
+                {% endif %}
+                on {{ exposure.date }} 
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

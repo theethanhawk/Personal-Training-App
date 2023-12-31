@@ -1,0 +1,207 @@
+{% extends "health_metrics_app/metrics_base.html" %}
+
+{% block content %}
+
+<p>
+    <a href="{% url 'health_metrics_app:add_health_metrics_dashboard' %}">Add Metrics</a> -
+    <a href="{% url 'health_metrics_app:health_metrics_dashboard' %}">Metrics Dashboard</a>
+</p>
+
+<div class="metrics-container">
+    <div class="metric-section">
+        <h2>Morning Metrics</h2>
+        <h4>Morning Heart Rate</h4>
+        <!-- Heart Rate Form -->
+        <form method="post" id="morning-heartrate-form">
+            {% csrf_token %}
+            {{ morning_heartrate_form.as_p }}
+            <button type="button" id="submit-heartrate">Submit</button>
+        </form>
+
+        <h4>Hours Slept</h4>
+        <!-- Hours Slept Form -->
+        <form method="post" id="hoursslept-form">
+            {% csrf_token %}
+            {{ hoursslept_form.as_p }}
+            <button type="button" id="submit-hoursslept">Submit</button>
+        </form>
+        
+        <h4>Sleep Quality</h4>
+        <!-- Sleep Quality Form -->
+        <form method="post" id="sleep-form">
+            {% csrf_token %}
+            {{ sleep_form.as_p }}
+            <button type="button" id="submit-sleep">Submit</button>
+        </form>
+    </div>
+
+    <div class="metric-section">
+        <h2>End of Day Metrics</h2>
+        <h4>ScreenTime</h4>
+        <!-- ScreenTime form -->
+        <form method="post" id="screen-form">
+            {% csrf_token %}
+            {{ screen_form.as_p }}
+            <button type="button" id="submit-screen">Submit</button>
+        </form>
+
+        <h4>Diet Quality</h4>
+        <!-- Diet quality form -->
+        <form method="post" id="diet-form">
+            {% csrf_token %}
+            {{ diet_form.as_p }}
+            <button type="button" id="submit-diet">Submit</button>
+        </form>
+
+        <h4>Mobility Work</h4>
+        <!-- Mobility work form -->
+        <form method="post" id="mobility-form">
+            {% csrf_token %}
+            {{ mobility_form.as_p }}
+            <button type="button" id="submit-mobility">Submit</button>
+        </form>
+
+        <h4>Cold Exposure</h4>
+        <!-- Cold Exposure Form -->
+        <form method="post" id="cold-form">
+            {% csrf_token %}
+            {{ cold_form.as_p }}
+            <button type="button" id="submit-cold">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            // Handling Hoursslept Form Submission
+            $("#submit-hoursslept").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'health_metrics_app:add_health_metrics_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        date: $('#id_hours_slept_date').val(),  // Replace with actual field ID
+                        hours: $('#id_hours_slept').val(),  // Replace with actual field ID
+                        hoursslept_submit: 'Submit'  // Unique identifier for the sleep form
+                    },
+                    success: function(){
+                        alert("Hours slept data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+
+            // Handling Heartrate Form Submission
+            $("#submit-heartrate").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'health_metrics_app:add_health_metrics_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        date: $('#id_morning_heartrate_date').val(),  // Replace with actual field ID
+                        rate: $('#id_morning_heart_rate').val(),  // Replace with actual field ID
+                        heartrate_submit: 'Submit'  // Unique identifier for the sleep form
+                    },
+                    success: function(){
+                        alert("Heart data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+
+            // Handling Diet Quality Form Submission
+            $("#submit-mobility").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'health_metrics_app:add_health_metrics_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        date: $('#id_mobility_date').val(),  // Replace with actual field ID
+                        completed: $('#id_mobility_completed').is(':checked'),  // Replace with actual field ID
+                        mobility_submit: 'Submit'  // Unique identifier for the sleep form
+                    },
+                    success: function(){
+                        alert("Mobility data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+
+            // Handling Diet Quality Form Submission
+            $("#submit-diet").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'health_metrics_app:add_health_metrics_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        date: $('#id_diet_date').val(),  // Replace with actual field ID
+                        quality: $('#id_diet_quality').val(),  // Replace with actual field ID
+                        diet_submit: 'Submit'  // Unique identifier for the sleep form
+                    },
+                    success: function(){
+                        alert("Diet data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+
+            // Handling Sleep Quality Form Submission
+            $("#submit-sleep").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'health_metrics_app:add_health_metrics_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        date: $('#id_sleep_date').val(),  // Replace with actual field ID
+                        quality: $('#id_sleep_quality').val(),  // Replace with actual field ID
+                        sleep_submit: 'Submit'  // Unique identifier for the sleep form
+                    },
+                    success: function(){
+                        alert("Sleep data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+
+            // Handling Screentime Form Submission
+            $("#submit-screen").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'health_metrics_app:add_health_metrics_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        date: $('#id_screentime_date').val(),  // Replace with actual field ID
+                        time: $('#id_screen_time').val(),  // Replace with actual field ID
+                        screen_submit: 'Submit'  // Unique identifier for the sleep form
+                    },
+                    success: function(){
+                        alert("Screentime data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+    
+            // Handling Cold Exposure Form Submission
+            $("#submit-cold").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'health_metrics_app:add_health_metrics_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        date: $('#id_cold_date').val(),  // Replace with actual field ID
+                        exposed: $('#id_cold_exposed').is(':checked'),  // Replace with actual field ID
+                        cold_submit: 'Submit'  // Unique identifier for the cold exposure form
+                    },
+                    success: function(){
+                        alert("Cold exposure data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+        });
+    </script>
+
+
+{% endblock content %}
