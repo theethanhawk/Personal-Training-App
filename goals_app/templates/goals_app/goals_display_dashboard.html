@@ -1,0 +1,49 @@
+{% extends "goals_app/goals_base.html" %}
+
+{% block content %}
+
+<p>
+    <a href="{% url 'goals_app:add_goals_dashboard' %}">Add Goals</a> -
+    <a href="{% url 'goals_app:goals_display_dashboard' %}">Goals Dashboard</a>
+</p>
+
+<div class="goals-container">
+    <div class="goals-section">
+        <h2>Priority Goals</h2>
+        {% for goal in goal_data %}
+        <div>
+            <p>{{ goal.title }}</p>
+            <p>{{ goal.definition}}</p>
+            <p>{{ goal.actionObjectiveAbstract }}</p>
+            <p>{{ goal.measuresAbstract }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="goals-section">
+        <h2>Action Objectives</h2>
+        {% for action in actionObjective_data %}
+        <div>
+            <p>
+                To complete the goal {{ action.goal }} 
+                I will need to {{ action.actionDefinition }} 
+                for {{ action.hours_per_week }} hours per week, 
+                {{ action.hours_per_day }} per day.
+            </p>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="goals-section">
+        <h2>Longterm Goals</h2>
+        {% for goal in longTermGoal_data %}
+        <div>
+            <p>{{ goal.title }}</p>
+            <p>{{ goal.description }}</p>
+            <p>I see myself achieving this goal in {{ goal.timeframe }} years.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+
+{% endblock content %}

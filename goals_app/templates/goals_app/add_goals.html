@@ -1,0 +1,115 @@
+{% extends "goals_app/goals_base.html" %}
+
+{% block content %}
+
+<p>
+    <a href="{% url 'goals_app:add_goals_dashboard' %}">Add Goals</a> -
+    <a href="{% url 'goals_app:goals_display_dashboard' %}">Goals Dashboard</a>
+</p>
+
+<div class="goals-container">
+    <div class="goals-section">
+        <h2>Priority Goals</h2>
+        <!-- GoalForm -->
+        <form method="post" id="goal-form">
+            {% csrf_token %}
+            {{ goal_form.as_p }}
+            <button type="button" id="submit-goal">Submit</button>
+        </form>
+    </div>
+
+    <div class="goals-section">
+        <h2>Objectives</h2>
+        <!-- ActionObjectiveForm -->
+        <form method="post" id="actionObjective-form">
+            {% csrf_token %}
+            <p>{{ actionObjective_form.goal.label_tag }} {{ actionObjective_form.goal }}</p>
+            <p>{{ actionObjective_form.actionDefinition.label_tag }} {{ actionObjective_form.actionDefinition }}</p>
+            <p>{{ actionObjective_form.hours_per_week.label_tag }} {{ actionObjective_form.hours_per_week }}</p>
+            <p>{{ actionObjective_form.hours_per_day.label_tag }} {{ actionObjective_form.hours_per_day }}</p>
+            <p>{{ actionObjective_form.created_at.label_tag }} {{ actionObjective_form.created_at }}</p>
+            <p>{{ actionObjective_form.is_completed.label_tag }} {{ actionObjective_form.is_completed }}</p>
+            <button type="button" id="submit-actionobjective">Submit</button>
+        </form>
+    </div>
+
+    <div class="goals-section">
+        <h2>Longterm Goals</h2>
+        <!-- LongTermGoalForm -->
+        <form method="post" id="longtermgoal-form">
+            {% csrf_token %}
+            {{ longtermgoal_form.as_p }}
+            <button type="button" id="submit-longtermgoal">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            // Handling Goal Form Submission
+            $("#submit-goal").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'goals_app:add_goals_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        created_at: $('#id_goal_created_at').val(),
+                        title: $('#id_goal_title').val(),
+                        definition: $('#id_goal_definition').val(),
+                        actionObjectiveAbstract: $('#id_goal_actionObjectiveAbstract').val(),
+                        measuresAbstract: $('#id_goal_measuresAbstract').val(),
+                        is_completed: $('#id_goal_is_completed').val(),
+                        goal_submit: 'Submit'
+                    },
+                    success: function(){
+                        alert("Goal data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+            // Handling ActionObjective Form Submission
+            $("#submit-actionobjective").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'goals_app:add_goals_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        goal: $('#id_actionObjective_goal').val(),
+                        created_at: $('#id_actionObjective_created_at').val(),
+                        actionDefinition: $('#id_actionObjective_actionDefinition').val(),
+                        hours_per_week: $('#id_actionObjective_hours_per_week').val(),
+                        hours_per_day: $('#id_actionObjective_hours_per_day').val(),
+                        is_completed: $('#id_actionObjective_is_completed').val(),
+                        actionobjective_submit: 'Submit'
+                    },
+                    success: function(){
+                        alert("Action Objective data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+            // Handling LongTermGoal Form Submission
+            $("#submit-longtermgoal").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'goals_app:add_goals_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        created_at: $('#id_longtermgoal_created_at').val(),
+                        title: $('#id_longterm_goal_title').val(),
+                        description: $('#id_longTermGoal_description').val(),
+                        timeframe: $('#id_longTermGoal_timeframe').val(),
+                        longtermgoal_submit: 'Submit'
+                    },
+                    success: function(){
+                        alert("Long Term Goal data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+        });
+    </script>
+
+{% endblock content %}

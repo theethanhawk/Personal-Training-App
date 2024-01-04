@@ -2,10 +2,9 @@
 
 {% block content %}
 
-<p>Goals</p>
-
 <p>
-    Work with goals here
+    <a href="{% url 'goals_app:add_goals_dashboard' %}">Add Goals</a> -
+    <a href="{% url 'goals_app:goals_display_dashboard' %}">Goals Dashboard</a>
 </p>
 
 

@@ -1,13 +1,45 @@
-<h1>Dashboard</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        .goals-container {
+            display: flex;
+            justify-content: space-around;
+        }
 
-<p>
-    <a href="{% url 'workout_hub_app:workouts' %}">Train</a> -
-    <a href="{% url 'pt_programs_app:programs' %}">Programs</a> -
-    <a href="{% url 'pt_data_app:data' %}">Data</a> -
-    <a href="{% url 'dashboard_app:dashboard' %}">Dashboard</a> -
-    <a href="{% url 'goals_app:goals' %}">Goals</a> -
-    <a href="{% url 'health_metrics_app:metrics' %}">Metrics</a> -
-    <a>Sign In</a>
-</p>
+        .goals-section {
+            flex: 1;
+            margin: 10px;
+            padding: 10px;
+        }
 
-{% block content %}{% endblock content %}
+        body {
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, p {
+            margin: 0;
+            padding: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dashboard</h1>
+
+    <p>
+        <a href="{% url 'workout_hub_app:workouts' %}">Train</a> -
+        <a href="{% url 'pt_programs_app:programs' %}">Programs</a> -
+        <a href="{% url 'pt_data_app:data' %}">Data</a> -
+        <a href="{% url 'dashboard_app:dashboard' %}">Dashboard</a> -
+        <a href="{% url 'goals_app:goals' %}">Goals</a> -
+        <a href="{% url 'health_metrics_app:metrics' %}">Metrics</a> -
+        <a>Sign In</a>
+    </p>
+
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>
