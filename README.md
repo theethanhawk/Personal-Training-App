@@ -70,4 +70,5 @@ workout_hub_app
 You can now proceed to build the project using the files in this repository.
 
 Commit history:
-First commit included the basic layout of the homepage with links to the different components of the app. Functionality of adding metric data and viewing metric data have been added.
+first commit - included the basic layout of the homepage with links to the different components of the app. Functionality of adding metric data and viewing metric data have been added.
+second commit - includes models, forms, and views for goals as well as html for adding and viewing goals.
