@@ -1,0 +1,25 @@
+{% extends "workout_hub_app/workout_hub_base.html" %}
+
+{% block content %}
+
+<p>
+    <a href="{% url 'workout_hub_app:create_workout' %}">Create Workout</a> -
+    <a href="{% url 'workout_hub_app:workouts_dashboard' %}">Workouts Dashboard</a>
+</p>
+<div class="workout-container">
+    <div class="workout-section">
+        <h2>Todays Workout</h2>
+        {% for workout in workout_data %}
+        <div>
+            <p>{{ workout.title }}</p>
+            <p>{{ workout.date}}</p>
+            <p>{{ workout.description }}</p>
+            <p>{{ workout.pre_note }}</p>
+            <p>{{ workout.post_note }}</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% endblock content %}

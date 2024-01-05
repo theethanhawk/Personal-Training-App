@@ -1,0 +1,52 @@
+{% extends "workout_hub_app/workout_hub_base.html" %}
+
+{% block content %}
+
+<p>
+    <a href="{% url 'workout_hub_app:create_workout' %}">Create Workout</a> -
+    <a href="{% url 'workout_hub_app:workouts_dashboard' %}">Workouts Dashboard</a>
+</p>
+
+<div class="workout-container">
+    <div class="workout-section">
+        <h2>Create Workout</h2>
+        <!-- Workout Form -->
+        <form method="post" id="workout-form">
+            {% csrf_token %}
+            <p>{{ workout_form.title.label_tag}} {{ workout_form.title }}</p>
+            <p>{{ workout_form.date.label_tag }} {{ workout_form.date }}</p>
+            <p>{{ workout_form.description.label_tag }} {{ workout_form.description }}</p>
+            <P>{{ workout_form.pre_note.label_tag }} {{ workout_form.pre_note }}</P>
+            <p>{{ workout_form.post_note.label_tag }} {{ workout_form.post_note }}</p>
+            <button type="button" id="submit-workout">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+            $("#submit-workout").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'workout_hub_app:create_workout' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        title: $('#id_workout_title').val(),
+                        date: $('#id_workout_date').val(),
+                        description: $('#id_workout_description').val(),
+                        pre_note: $('#id_workout_pre_note').val(),
+                        post_note: $('#id_workout_post_note').val(),
+                        workout_submit: 'Submit'
+                    },
+                    success: function(){
+                        alert("Workout created.");
+                        location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+
+{% endblock content %}
