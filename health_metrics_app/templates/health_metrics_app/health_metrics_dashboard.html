@@ -7,68 +7,158 @@
     <a href="{% url 'health_metrics_app:health_metrics_dashboard' %}">Metrics Dashboard</a>
 </p>
 
-<div class="metrics-container">
+<div class="metric-container">
     <div class="metric-section">
-        <h2>Morning Metrics</h2>
+        <h2>Morning Health Metrics</h2>
 
         <h3>Morning HeartRate Data</h3>
-        {% for rate in morning_heart_rate_data %}
-        <div>
-            <p>{{ rate.rate }}bpm on {{ rate.date|date:"M. d, Y" }}</p>
-        </div>
-        {% endfor %}
+            {% for rate in morning_heart_rate_data %}
+            <div>
+                <p>{{ rate.rate }}bpm on {{ rate.date|date:"M. d, Y" }}</p>
+            </div>
+            {% endfor %}
+
+        <h3>Morning Weight Data</h3>
+            {% for weight in morningweight_data %}
+            <div>
+                <p>{{ weight.weight }}lbs on {{ weight.date|date:"M. d, Y" }}</p>
+            </div>
+            {% endfor %}
 
         <h3>Hours Slept Data</h3>
-        {% for hours in sleep_hours_data %}
-        <div>
-            <p>{{ hours.hours }} hours of sleep on {{ hours.date|date:"M. d, Y" }}</p>
-        </div>
-        {% endfor %}
+            {% for hours in sleep_hours_data %}
+            <div>
+                <p>{{ hours.hours }} hours of sleep on {{ hours.date|date:"M. d, Y" }}</p>
+            </div>
+            {% endfor %}
 
         <h3>Sleep Quality Data</h3>
-        {% for quality in sleep_qualities %}
-            <div>{{ quality.get_quality_display }} on {{ quality.date }}</div>
-        {% endfor %}
+            {% for quality in sleep_qualities %}
+                <div>
+                    <p>{{ quality.get_quality_display }} on {{ quality.date }}</p>
+                </div>
+            {% endfor %}
+
+        <h3>Morning Energy</h3>
+            {% for level in morningenergy_data %}
+                <div>
+                    <p>{{ level.get_level_display }} on {{ level.date }}</p>
+                </div>
+            {% endfor %}
+        
     </div>
 
     <div class="metric-section">
-        <h2>End of Day Metrics</h2>
+        <h2>Day Health Metrics</h2>
 
-        <h3>ScreenTime Data</h3>
-        {% for time in screentime_data %}
-        <div>
-            <p>{{ time.time }} hours of screen time on {{ time.date|date:"M. d, Y" }}</p>
-        </div>
+        <h3>Daily Exercise</h3>
+        {% for day in dailyexercise_data %}
+            <div>
+                <P>
+                    {% if day.completed %}
+                        Completed
+                    {% else %}
+                        Not completed
+                    {% endif %}
+                    on {{ day.date }} 
+                </P>
+            </div>
         {% endfor %}
 
         <h3>Diet Quality Data</h3>
         {% for quality in diet_quality_data %}
-            <div>{{ quality.get_quality_display }} on {{ quality.date }} </div>
+            <div>
+                <p>
+                    {{ quality.get_quality_display }} on {{ quality.date }} 
+                </p>
+            </div>
         {% endfor %}
 
         <h3>Mobility Work Data</h3>
         {% for mobility in mobility_data %}
             <div>
-                {% if mobility.completed %}
-                    Completed
-                {% else %}
-                    Not completed
-                {% endif %}
-                on {{ mobility.date }} 
+                <P>
+                    {% if mobility.completed %}
+                        Completed
+                    {% else %}
+                        Not completed
+                    {% endif %}
+                    on {{ mobility.date }} 
+                </P>
             </div>
         {% endfor %}
 
-        <h3>Cold Exposure Data</h3>
-        {% for exposure in cold_exposures %}
+        <h3>Day Energy Data</h3>
+        {% for day in dayenergy_data %}
             <div>
-                {% if exposure.exposed %}
-                    Yes
-                {% else %}
-                    No
-                {% endif %}
-                on {{ exposure.date }} 
+                <p>
+                    {{ day.get_level_display }} on {{ day.date }} 
+                </p>
             </div>
         {% endfor %}
+
+        <h3>Focus Level Data</h3>
+        {% for date in focuslevel_data %}
+            <div>
+                <p>
+                    {{ date.get_level_display }} on {{ date.date }} 
+                </p>
+            </div>
+        {% endfor %}
+
+    </div>
+
+    <div class="metric-section">
+        <h2>Mental Health Metrics</h2>
+
+            <h3>ScreenTime Data</h3>
+            {% for time in screentime_data %}
+            <div>
+                <p>{{ time.time }} hours of screen time on {{ time.date|date:"M. d, Y" }}</p>
+            </div>
+            {% endfor %}
+
+            <h3>Cold Exposure Data</h3>
+            {% for exposure in cold_exposures %}
+                <div>
+                    <p>
+                        {% if exposure.exposed %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                        on {{ exposure.date }}
+                    </p>
+                </div>
+            {% endfor %}
+
+            <h3>Fresh Air Exposure Data</h3>
+            {% for exposure in freshair_data %}
+                <div>
+                    <p>
+                        {% if exposure.exposure %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                        on {{ exposure.date }}
+                    </p>
+                </div>
+            {% endfor %}
+
+            <h3>Social Connection Data</h3>
+            {% for x in socialconnection_data %}
+                <div>
+                    <p>
+                        {% if x.connection %}
+                            Yes
+                        {% else %}
+                            No
+                        {% endif %}
+                        on {{ x.date }}
+                    </p>
+                </div>
+            {% endfor %}
     </div>
 </div>
 

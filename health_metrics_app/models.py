@@ -12,6 +12,14 @@ class MorningHeartRate(models.Model):
 
     def __str__(self):
         return f"Morning Heart Rate: {self.rate} at {self.date.strftime('%Y-%m-%d')}"
+
+
+class MorningWeight(models.Model):
+    weight = models.PositiveIntegerField()
+    date = models.DateField()
+
+    def __str__(self):
+        return f"Weight {self.weight}lbs on {self.date}"
     
 
 class HoursSlept(models.Model):
@@ -41,25 +49,35 @@ class SleepQuality(models.Model):
         return f"{self.date}: {self.get_quality_display()}"
     
 
-class ColdExposure(models.Model):
+class MorningEnergy(models.Model):
+    LOW = 'low'
+    AVERAGE = 'average'
+    GOOD = 'good'
+    HIGH = 'high'
+    ENERGY_LEVEL_CHOICES = [
+        (LOW, 'Low Energy'),
+        (AVERAGE, 'Average Energy'),
+        (GOOD, 'Good Energy'),
+        (HIGH, 'High Energy'),
+    ]
+
     date = models.DateField()
-    exposed = models.BooleanField()
+    level = models.CharField(max_length=7, choices=ENERGY_LEVEL_CHOICES)
 
     def __str__(self):
-        return f"{self.date}: {'Yes' if self.exposed else 'No'}"
+        return f"{self.date}: {self.get_level_display()}"
+
+# ------------------------
+# Day health metric models
+# ------------------------
     
 
-# -------------------------------
-# End of day health metric models
-# -------------------------------
-    
-
-class ScreenTime(models.Model):
-    time = models.PositiveIntegerField()
+class DailyExercise(models.Model):
     date = models.DateField()
+    completed = models.BooleanField()
 
     def __str__(self):
-        return f"{self.time} screentime on {self.date.strftime('%Y-%m-%d')}"
+        return f"{self.date}: {'Yes' if self.completed else 'No'}"
     
 
 class DietQuality(models.Model):
@@ -89,18 +107,72 @@ class MobilityWork(models.Model):
         return f"{self.date}: {'Yes' if self.completed else 'No'}"
     
 
-"""Data sets to add"""
-# completed daily mobility and stretching - Boolean
-# did I have any healthy sex - Choices
-# did I get outside, particularly in the beginning of the day - Boolean
-# drug consumption? - Choices
-# did I exercise that day - Boolean
-# quality of exercise - Choices
-# was my diet in a deficit or excess
-# social connection - choices
-# energy level 1-5 - choices
-# mood 1-5 - choices
-# focus/productivity 1-5 - choices
-# daily vitamins - boolean
-# cold exposure - boolean
-# other medications - choices
+class DayEnergy(models.Model):
+    LOW = 'low'
+    AVERAGE = 'average'
+    GOOD = 'good'
+    HIGH = 'high'
+    ENERGY_LEVEL_CHOICES = [
+        (LOW, 'Low Energy'),
+        (AVERAGE, 'Average Energy'),
+        (GOOD, 'Good Energy'),
+        (HIGH, 'High Energy'),
+    ]
+
+    date = models.DateField()
+    level = models.CharField(max_length=7, choices=ENERGY_LEVEL_CHOICES)
+
+    def __str__(self):
+        return f"{self.date}: {self.get_level_display()}"
+
+
+class FocusLevel(models.Model):
+    DISTRACTED = 'distracted'
+    MIXED = 'mixed'
+    FOCUSED = 'focused'
+    FOCUS_LEVEL_CHOICES = [
+        (DISTRACTED, 'Distracted Mind'),
+        (MIXED, 'Mixed Mind'),
+        (FOCUSED, 'Focused Mind'),
+    ]
+
+    date = models.DateField()
+    level = models.CharField(max_length=10, choices=FOCUS_LEVEL_CHOICES)
+
+    def __str__(self):
+        return f"{self.date}: {self.get_level_display()}"   
+    
+
+#----------------------
+# Mental Health Metrics
+#----------------------
+
+class ScreenTime(models.Model):
+    time = models.PositiveIntegerField()
+    date = models.DateField()
+
+    def __str__(self):
+        return f"{self.time} screentime on {self.date.strftime('%Y-%m-%d')}"
+    
+class ColdExposure(models.Model):
+    date = models.DateField()
+    exposed = models.BooleanField()
+
+    def __str__(self):
+        return f"{self.date}: {'Yes' if self.exposed else 'No'}"
+    
+
+class FreshAirExposure(models.Model):
+    date = models.DateField()
+    exposure = models.BooleanField()
+
+    def __str__(self):
+        return f"{self.date}: {'Yes' if self.exposure else 'No'}"
+    
+
+class SocialConnection(models.Model):
+    date = models.DateField()
+    connection = models.BooleanField()
+
+    def __str__(self):
+        return f"{self.date}: {'Yes' if self.connection else 'No'}"

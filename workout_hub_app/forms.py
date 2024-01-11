@@ -11,5 +11,5 @@ class WorkoutForm(forms.ModelForm):
             'date': forms.DateInput(attrs={'id':'id_workout_date'}),
             'description': forms.Textarea(attrs={'id': 'id_workout_description'}),
             'pre_note': forms.Textarea(attrs={'id': 'id_workout_pre_note'}),
-            'post_note': forms.TextInput(attrs={'id': 'id_workout_post_note'}),
+            'post_note': forms.Textarea(attrs={'id': 'id_workout_post_note'}),
         }

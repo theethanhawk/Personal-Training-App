@@ -29,7 +29,7 @@ def create_workout(request):
 
 
 def workouts_dashboard(request):
-    workout_data = Workout.objects.all()
+    workout_data = Workout.objects.all().order_by('-date')
 
     return render(request, 'workout_hub_app/workouts_dashboard.html', {
         'workout_data': workout_data,

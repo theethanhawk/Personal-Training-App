@@ -7,15 +7,24 @@
     <a href="{% url 'health_metrics_app:health_metrics_dashboard' %}">Metrics Dashboard</a>
 </p>
 
-<div class="metrics-container">
+<div class="metric-container">
     <div class="metric-section">
         <h2>Morning Metrics</h2>
+
         <h4>Morning Heart Rate</h4>
         <!-- Heart Rate Form -->
         <form method="post" id="morning-heartrate-form">
             {% csrf_token %}
             {{ morning_heartrate_form.as_p }}
             <button type="button" id="submit-heartrate">Submit</button>
+        </form>
+
+        <h4>Morning Weight</h4>
+        <!-- Morning Weight Form -->
+        <form method="post" id="morning-weight-form">
+            {% csrf_token %}
+            {{ morningweight_form.as_p }}
+            <button type="button" id="submit-morningweight">Submit</button>
         </form>
 
         <h4>Hours Slept</h4>
@@ -33,16 +42,24 @@
             {{ sleep_form.as_p }}
             <button type="button" id="submit-sleep">Submit</button>
         </form>
+        <h4>Morning Energy</h4>
+        <!-- Morning Energy Form -->
+        <form method="post" id="morningenergy-form">
+            {% csrf_token %}
+            {{ morningenergy_form.as_p }}
+            <button type="button" id="submit-morningenergy">Submit</button>
+        </form>
     </div>
 
     <div class="metric-section">
-        <h2>End of Day Metrics</h2>
-        <h4>ScreenTime</h4>
-        <!-- ScreenTime form -->
-        <form method="post" id="screen-form">
+        <h2>Day Health Metrics</h2>
+
+        <h4>Daily Exercise</h4>
+        <!-- Daily Exercise form -->
+        <form method="post" id="dailyexercise-form">
             {% csrf_token %}
-            {{ screen_form.as_p }}
-            <button type="button" id="submit-screen">Submit</button>
+            {{ dailyexercise_form.as_p }}
+            <button type="button" id="submit-dailyexercise">Submit</button>
         </form>
 
         <h4>Diet Quality</h4>
@@ -61,12 +78,57 @@
             <button type="button" id="submit-mobility">Submit</button>
         </form>
 
+        <h4>Daytime Energy</h4>
+        <!-- Day Energy form -->
+        <form method="post" id="dayenergy-form">
+            {% csrf_token %}
+            {{ dayenergy_form.as_p }}
+            <button type="button" id="submit-dayenergy">Submit</button>
+        </form>
+
+        <h4>Focus Level</h4>
+        <!-- Focus Level form -->
+        <form method="post" id="focuslevel-form">
+            {% csrf_token %}
+            {{ focuslevel_form.as_p }}
+            <button type="button" id="submit-focuslevel">Submit</button>
+        </form>
+
+    </div>
+
+    <div class="metric-section">
+        <h2>End of Day Metrics</h2>
+
+        <h4>ScreenTime</h4>
+        <!-- ScreenTime form -->
+        <form method="post" id="screen-form">
+            {% csrf_token %}
+            {{ screen_form.as_p }}
+            <button type="button" id="submit-screen">Submit</button>
+        </form>
+
         <h4>Cold Exposure</h4>
         <!-- Cold Exposure Form -->
         <form method="post" id="cold-form">
             {% csrf_token %}
             {{ cold_form.as_p }}
             <button type="button" id="submit-cold">Submit</button>
+        </form>
+
+        <h4>Fresh Air</h4>
+        <!-- Fresh Air Form -->
+        <form method="post" id="freshair-form">
+            {% csrf_token %}
+            {{ freshair_form.as_p }}
+            <button type="button" id="submit-freshair">Submit</button>
+        </form>
+
+        <h4>Social Connection</h4>
+        <!-- Social Connection Form -->
+        <form method="post" id="socialconnection-form">
+            {% csrf_token %}
+            {{ socialconnection_form.as_p }}
+            <button type="button" id="submit-socialconnection">Submit</button>
         </form>
     </div>
 </div>
@@ -93,6 +155,42 @@
                 });
             });
 
+            // Handling Morning Weight Form Submission
+            $("#submit-morningweight").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'health_metrics_app:add_health_metrics_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        date: $('#id_morning_weight_date').val(),
+                        weight: $('#id_morning_weight').val(),
+                        morningweight_submit: 'Submit'
+                    },
+                    success: function(){
+                        alert("Morning weight data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+
+            // Handling Morning Energy Form Submission
+            $("#submit-morningenergy").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'health_metrics_app:add_health_metrics_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        date: $('#id_morning_energy_date').val(),
+                        level: $('#id_morning_energy_level').val(),
+                        morningenergy_submit: 'Submit'
+                    },
+                    success: function(){
+                        alert("Morning energy data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+
             // Handling Heartrate Form Submission
             $("#submit-heartrate").click(function(){
                 $.ajax({
@@ -111,7 +209,7 @@
                 });
             });
 
-            // Handling Diet Quality Form Submission
+            // Handling Mobility Form Submission
             $("#submit-mobility").click(function(){
                 $.ajax({
                     type: "POST",
@@ -124,6 +222,24 @@
                     },
                     success: function(){
                         alert("Mobility data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+
+             // Handling Daily Exercise Form Submission
+             $("#submit-dailyexercise").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'health_metrics_app:add_health_metrics_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        date: $('#id_daily_exercise_date').val(),  // Replace with actual field ID
+                        completed: $('#id_daily_exercise_completed').is(':checked'),  // Replace with actual field ID
+                        dailyexercise_submit: 'Submit'  // Unique identifier for the cold exposure form
+                    },
+                    success: function(){
+                        alert("Daily Exercise data submitted!");
                         location.reload(); // Reload the page to update the list
                     }
                 });
@@ -196,6 +312,78 @@
                     },
                     success: function(){
                         alert("Cold exposure data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+
+            // Handling Daytime Energy Form Submission
+            $("#submit-dayenergy").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'health_metrics_app:add_health_metrics_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        date: $('#id_day_energy_date').val(),  // Replace with actual field ID
+                        level: $('#id_day_energy_level').val(),  // Replace with actual field ID
+                        dayenergy_submit: 'Submit'  // Unique identifier for the cold exposure form
+                    },
+                    success: function(){
+                        alert("Day energy data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+
+            // Handling Focus Level Form Submission
+            $("#submit-focuslevel").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'health_metrics_app:add_health_metrics_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        date: $('#id_focus_level_date').val(),  // Replace with actual field ID
+                        level: $('#id_focus_level').val(),  // Replace with actual field ID
+                        focuslevel_submit: 'Submit'  // Unique identifier for the cold exposure form
+                    },
+                    success: function(){
+                        alert("Cold exposure data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+
+            // Handling Fresh Air Form Submission
+            $("#submit-freshair").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'health_metrics_app:add_health_metrics_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        date: $('#id_fresh_air_date').val(),  // Replace with actual field ID
+                        exposure: $('#id_freshair_exposure').is(':checked'),  // Replace with actual field ID
+                        freshair_submit: 'Submit'  // Unique identifier for the cold exposure form
+                    },
+                    success: function(){
+                        alert("Fresh Air data submitted!");
+                        location.reload(); // Reload the page to update the list
+                    }
+                });
+            });
+
+            // Handling Social Connection Form Submission
+            $("#submit-socialconnection").click(function(){
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'health_metrics_app:add_health_metrics_dashboard' %}",
+                    data: {
+                        csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val(),
+                        date: $('#id_social_connection_date').val(),  // Replace with actual field ID
+                        connection: $('#id_social_connection').is(':checked'),  // Replace with actual field ID
+                        socialconnection_submit: 'Submit'  // Unique identifier for the cold exposure form
+                    },
+                    success: function(){
+                        alert("Social connection data submitted!");
                         location.reload(); // Reload the page to update the list
                     }
                 });

@@ -3,41 +3,145 @@
 <head>
     <title>Dashboard</title>
     <style>
-        .metrics-container {
-            display: flex;
-            justify-content: space-around;
-        }
-
-        .metric-section {
-            flex: 1;
-            margin: 10px;
-            padding: 10px;
-        }
-
         body {
+            font-family: 'Roboto', sans-serif;
             text-align: center;
             margin: 0;
             padding: 0;
+            background-color: #333;
         }
 
-        h1, p {
-            margin: 0;
-            padding: 10px 0;
+        a {
+            color: #FF0000;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        .navbar-links, .navbar-signin {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-links {
+            justify-content: center;
+            flex-grow: 1; /* This will make the links container grow and push the sign in to the right */
+        }
+
+        .navbar a {
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .metric-container {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        .metric-section {
+            width: 25%;
+            margin: 10px auto;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            text-align: left;
+        }
+
+        /* Responsive Design for smaller screens */
+        @media (max-width: 800px) {
+            .metric-section {
+                width: 100%; /* Full width for small screens */
+            }
+        }
+
+        /* Styling for each workout item */
+        .metric-section div {
+            border-bottom: 1px solid #eee; /* Separate each workout item */
+            padding-bottom: 10px; /* Add padding at the bottom */
+            margin-bottom: 10px; /* Add margin at the bottom */
+        }
+
+        .metric-section div:last-child {
+            border-bottom: none; /* Remove border for the last item */
+        }
+
+        /* Styling for the workout title */
+        .metric-section h4 {
+            margin-top: 0; /* Remove top margin for titles */
+            color: #333; /* Title color */
+            font-size: 1.2em; /* Increase font size for titles */
+        }
+
+        /* Styling for the dates and descriptions */
+        .metric-section p {
+            margin: 5px 0; /* Reduce margin for paragraphs */
+            color: #666; /* Lighter text color for descriptions */
+            font-size: 0.9em; /* Smaller font size for descriptions */
+        }
+
+        .metric-section:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.3);
+        }
+
+        h1, h2, p {
+            margin: 10px 0;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <h1>Dashboard</h1>
+    <div class="navbar">
+        <div class="navbar-links">
+            <a href="{% url 'workout_hub_app:workouts' %}">Train</a>
+            <a href="{% url 'pt_programs_app:programs' %}">Programs</a>
+            <a href="{% url 'pt_data_app:data' %}">Data</a>
+            <a href="{% url 'dashboard_app:dashboard' %}">Dashboard</a>
+            <a href="{% url 'goals_app:goals' %}">Goals</a>
+            <a href="{% url 'health_metrics_app:metrics' %}">Metrics</a>
+        </div>
+        <div class="navbar-signin">
+            <a>Sign In</a>
+        </div>
+    </div>
 
-    <p>
-        <a href="{% url 'workout_hub_app:workouts' %}">Train</a> -
-        <a href="{% url 'pt_programs_app:programs' %}">Programs</a> -
-        <a href="{% url 'pt_data_app:data' %}">Data</a> -
-        <a href="{% url 'dashboard_app:dashboard' %}">Dashboard</a> -
-        <a href="{% url 'goals_app:goals' %}">Goals</a> -
-        <a href="{% url 'health_metrics_app:metrics' %}">Metrics</a> - 
-        <a>Sign In</a>
-    </p>
+    <h1 style="color: white;">Dashboard</h1>
 
     {% block content %}
     {% endblock content %}

@@ -8,11 +8,11 @@
 </p>
 <div class="workout-container">
     <div class="workout-section">
-        <h2>Todays Workout</h2>
+        <h2>Workouts</h2>
         {% for workout in workout_data %}
         <div>
-            <p>{{ workout.title }}</p>
-            <p>{{ workout.date}}</p>
+            <h4>{{ workout.date }}</h4>
+            <h3>{{ workout.title }}</h3>
             <p>{{ workout.description }}</p>
             <p>{{ workout.pre_note }}</p>
             <p>{{ workout.post_note }}</p>

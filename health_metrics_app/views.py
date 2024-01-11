@@ -3,12 +3,16 @@ from django.http import JsonResponse
 
 from .models import (
     MorningHeartRate, HoursSlept, SleepQuality, ColdExposure, 
-    ScreenTime, DietQuality, MobilityWork
+    ScreenTime, DietQuality, MobilityWork, MorningWeight, MorningEnergy,
+    DailyExercise, DayEnergy, FocusLevel,
+    FreshAirExposure, SocialConnection
 )
 
 from .forms import (
     MorningHeartRateForm, HoursSleptForm, SleepQualityForm, ColdExposureForm,
-    ScreenTimeForm, DietQualityForm, MobilityWorkForm
+    ScreenTimeForm, DietQualityForm, MobilityWorkForm, MorningWeightForm,
+    MorningEnergyForm, DailyExerciseForm, DayEnergyForm, FocusLevelForm, 
+    FreshAirExposureForm, SocialConnectionForm
 )
 # Create your views here.
 
@@ -34,6 +38,38 @@ def add_health_metrics(request):
                 return JsonResponse({'success': True})  # Respond with JSON for AJAX
             else:
                 return JsonResponse({'success': False, 'errors': cold_form.errors})
+            
+        elif 'socialconnection_submit' in request.POST:  # Add a name attribute to the cold form submit button
+            socialconnection_form = SocialConnectionForm(request.POST)
+            if socialconnection_form.is_valid():
+                socialconnection_form.save()
+                return JsonResponse({'success': True})  # Respond with JSON for AJAX
+            else:
+                return JsonResponse({'success': False, 'errors': socialconnection_form.errors})
+            
+        elif 'freshair_submit' in request.POST:  # Add a name attribute to the cold form submit button
+            freshair_form = FreshAirExposureForm(request.POST)
+            if freshair_form.is_valid():
+                freshair_form.save()
+                return JsonResponse({'success': True})  # Respond with JSON for AJAX
+            else:
+                return JsonResponse({'success': False, 'errors': freshair_form.errors})
+            
+        elif 'focuslevel_submit' in request.POST:  # Add a name attribute to the cold form submit button
+            focuslevel_form = FocusLevelForm(request.POST)
+            if focuslevel_form.is_valid():
+                focuslevel_form.save()
+                return JsonResponse({'success': True})  # Respond with JSON for AJAX
+            else:
+                return JsonResponse({'success': False, 'errors': focuslevel_form.errors})
+            
+        elif 'dayenergy_submit' in request.POST:  # Add a name attribute to the cold form submit button
+            dayenergy_form = DayEnergyForm(request.POST)
+            if dayenergy_form.is_valid():
+                dayenergy_form.save()
+                return JsonResponse({'success': True})  # Respond with JSON for AJAX
+            else:
+                return JsonResponse({'success': False, 'errors': dayenergy_form.errors})
             
         elif 'screen_submit' in request.POST:
             screen_form = ScreenTimeForm(request.POST)
@@ -74,6 +110,30 @@ def add_health_metrics(request):
                 return JsonResponse({'success': True})  # Respond with JSON for AJAX
             else:
                 return JsonResponse({'success': False, 'errors': hoursslept_form.errors})
+            
+        elif 'morningweight_submit' in request.POST:
+            morningweight_form = MorningWeightForm(request.POST)
+            if morningweight_form.is_valid():
+                morningweight_form.save()
+                return JsonResponse({'success': True})  # Respond with JSON for AJAX
+            else:
+                return JsonResponse({'success': False, 'errors': morningweight_form.errors})
+            
+        elif 'morningenergy_submit' in request.POST:
+            morningenergy_form = MorningEnergyForm(request.POST)
+            if morningenergy_form.is_valid():
+                morningenergy_form.save()
+                return JsonResponse({'success': True})  # Respond with JSON for AJAX
+            else:
+                return JsonResponse({'success': False, 'errors': morningenergy_form.errors})
+            
+        elif 'dailyexercise_submit' in request.POST:
+            dailyexercise_form = DailyExerciseForm(request.POST)
+            if dailyexercise_form.is_valid():
+                dailyexercise_form.save()
+                return JsonResponse({'success': True})  # Respond with JSON for AJAX
+            else:
+                return JsonResponse({'success': False, 'errors': dailyexercise_form.errors})
 
     else:
         hoursslept_form = HoursSleptForm()
@@ -83,6 +143,14 @@ def add_health_metrics(request):
         screen_form = ScreenTimeForm()
         diet_form = DietQualityForm()
         mobility_form = MobilityWorkForm()
+        morningweight_form = MorningWeightForm()
+        morningenergy_form = MorningEnergyForm()
+        dailyexercise_form = DailyExerciseForm()
+        dayenergy_form = DayEnergyForm()
+        focuslevel_form = FocusLevelForm()
+        freshair_form = FreshAirExposureForm()
+        socialconnection_form = SocialConnectionForm()
+
 
     return render(request, 'health_metrics_app/add_health_metrics_dashboard.html', {
         'hoursslept_form': hoursslept_form,
@@ -92,6 +160,13 @@ def add_health_metrics(request):
         'screen_form': screen_form,
         'diet_form': diet_form,
         'mobility_form': mobility_form,
+        'morningweight_form': morningweight_form,
+        'morningenergy_form': morningenergy_form,
+        'dailyexercise_form': dailyexercise_form,
+        'dayenergy_form': dayenergy_form,
+        'focuslevel_form': focuslevel_form,
+        'freshair_form': freshair_form,
+        'socialconnection_form': socialconnection_form,
     })
 
 
@@ -104,6 +179,14 @@ def health_metrics_dashboard(request):
     screentime_data = ScreenTime.objects.all().order_by('-date')
     diet_quality_data = DietQuality.objects.all().order_by('-date')
     mobility_data = MobilityWork.objects.all().order_by('-date')
+    morningweight_data = MorningWeight.objects.all().order_by('-date')
+    morningenergy_data = MorningEnergy.objects.all().order_by('-date')
+    dailyexercise_data = DailyExercise.objects.all().order_by('-date')
+    dayenergy_data = DayEnergy.objects.all().order_by('-date')
+    focuslevel_data = FocusLevel.objects.all().order_by('-date')
+    freshair_data = FreshAirExposure.objects.all().order_by('-date')
+    socialconnection_data = SocialConnection.objects.all().order_by('-date')
+
     return render(request, 'health_metrics_app/health_metrics_dashboard.html', {
         'morning_heart_rate_data': morning_heart_rate_data,
         'sleep_hours_data': sleep_hours_data,
@@ -112,4 +195,11 @@ def health_metrics_dashboard(request):
         'mobility_data': mobility_data,
         'sleep_qualities': sleep_qualities,
         'cold_exposures': cold_exposures,
+        'morningweight_data': morningweight_data,
+        'morningenergy_data': morningenergy_data,
+        'dailyexercise_data': dailyexercise_data,
+        'dayenergy_data': dayenergy_data,
+        'focuslevel_data': focuslevel_data,
+        'freshair_data': freshair_data,
+        'socialconnection_data': socialconnection_data,
     })
