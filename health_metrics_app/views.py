@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.utils import timezone
 
 from .models import (
     MorningHeartRate, HoursSlept, SleepQuality, ColdExposure, 
@@ -172,6 +173,11 @@ def add_health_metrics(request):
 
 # Dashboard for displaying all data for health metrics
 def health_metrics_dashboard(request):
+    current_date = timezone.now().date()
+    current_year = current_date.year
+    current_month = current_date.month
+    current_day = current_date.day 
+
     morning_heart_rate_data = MorningHeartRate.objects.all().order_by('-date')
     sleep_hours_data = HoursSlept.objects.all().order_by('-date')
     sleep_qualities = SleepQuality.objects.all().order_by('-date')
@@ -186,6 +192,15 @@ def health_metrics_dashboard(request):
     focuslevel_data = FocusLevel.objects.all().order_by('-date')
     freshair_data = FreshAirExposure.objects.all().order_by('-date')
     socialconnection_data = SocialConnection.objects.all().order_by('-date')
+
+    daily_exercise_count = DailyExercise.objects.filter(
+        date__year=current_year, 
+        date__month=current_month, 
+        date__day__lte=current_day,  # Less than or equal to current day
+        completed=True
+    ).count()
+
+    daily_exercise_percentage = (daily_exercise_count / current_day) * 100
 
     return render(request, 'health_metrics_app/health_metrics_dashboard.html', {
         'morning_heart_rate_data': morning_heart_rate_data,
@@ -202,4 +217,5 @@ def health_metrics_dashboard(request):
         'focuslevel_data': focuslevel_data,
         'freshair_data': freshair_data,
         'socialconnection_data': socialconnection_data,
+        'daily_exercise_percentage': daily_exercise_percentage,
     })

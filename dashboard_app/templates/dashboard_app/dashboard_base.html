@@ -1,13 +1,105 @@
-<h1>Dashboard</h1>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #333;
+        }
 
-<p>
-    <a href="{% url 'workout_hub_app:workouts' %}">Train</a> -
-    <a href="{% url 'pt_programs_app:programs' %}">Programs</a> -
-    <a href="{% url 'pt_data_app:data' %}">Data</a> -
-    <a href="{% url 'dashboard_app:dashboard' %}">Dashboard</a> -
-    <a href="{% url 'goals_app:goals' %}">Goals</a> -
-    <a href="{% url 'health_metrics_app:metrics' %}">Metrics</a> - 
-    <a>Sign In</a>
-</p>
+        a {
+            color: #FF0000;
+            text-decoration: none;
+        }
 
-{% block content %}{% endblock content %}
+        a:hover {
+            text-decoration: underline;
+        }
+
+        p {
+            color: #FF0000;
+            text-decoration: none;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #333;
+            padding: 10px;
+            overflow: hidden;
+        }
+
+        .navbar-links, .navbar-signin {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-links {
+            justify-content: center;
+            flex-grow: 1; /* This will make the links container grow and push the sign in to the right */
+        }
+
+        .navbar a {
+            color: white;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        /* Responsive Design for smaller screens */
+        @media (max-width: 800px) {
+            .metric-section {
+                width: 100%; /* Full width for small screens */
+            }
+        }
+
+        h1, h2, p {
+            margin: 10px 0;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            margin: 10px 0;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-links">
+            <a href="{% url 'workout_hub_app:workouts' %}">Train</a>
+            <a href="{% url 'pt_programs_app:programs' %}">Programs</a>
+            <a href="{% url 'pt_data_app:data' %}">Data</a>
+            <a href="{% url 'dashboard_app:dashboard' %}">Dashboard</a>
+            <a href="{% url 'goals_app:goals' %}">Goals</a>
+            <a href="{% url 'health_metrics_app:metrics' %}">Metrics</a>
+        </div>
+        <div class="navbar-signin">
+            <a>Sign In</a>
+        </div>
+    </div>
+
+    <h1 style="color: white;">Dashboard</h1>
+
+    {% block content %}
+    {% endblock content %}
+</body>
+</html>

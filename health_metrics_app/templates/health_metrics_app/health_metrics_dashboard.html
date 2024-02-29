@@ -62,6 +62,9 @@
                     {% endif %}
                     on {{ day.date }} 
                 </P>
+                <p>
+                    {{ daily_exercise_percentage|floatformat:2 }}% completed so far this month
+                </p>
             </div>
         {% endfor %}
 

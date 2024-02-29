@@ -152,7 +152,7 @@ class ScreenTime(models.Model):
     date = models.DateField()
 
     def __str__(self):
-        return f"{self.time} screentime on {self.date.strftime('%Y-%m-%d')}"
+        return f"{self.time}hours of screentime on {self.date.strftime('%Y-%m-%d')}"
     
 class ColdExposure(models.Model):
     date = models.DateField()

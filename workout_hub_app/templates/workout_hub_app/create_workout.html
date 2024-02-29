@@ -7,10 +7,10 @@
     <a href="{% url 'workout_hub_app:workouts_dashboard' %}">Workouts Dashboard</a>
 </p>
 
+<!-- Workout Form -->
 <div class="workout-container">
     <div class="workout-section">
         <h2>Create Workout</h2>
-        <!-- Workout Form -->
         <form method="post" id="workout-form">
             {% csrf_token %}
             <p>{{ workout_form.title.label_tag}} {{ workout_form.title }}</p>
