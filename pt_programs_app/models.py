@@ -1,10 +1,12 @@
 """This file handles models for my training programs"""
+from datetime import timedelta
 
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from datetime import timedelta
+
+from workout_hub_app.models import Workout
 
 # Create your models here.
 
@@ -17,7 +19,7 @@ class ActivityType(models.Model):
     def __str__(self):
         """Returns string representation of tag"""
         return self.activity
-    
+
 
 class TrainingEvent(models.Model):
     """Representation details of one event in a days training"""
@@ -41,6 +43,8 @@ class TrainingWeek(models.Model):
     week_title = models.CharField(max_length=100)
     week_description = models.CharField(max_length=200)
     week_start_date = models.DateField()
+    # Call this field days_in_week = 7
+    #  "days_in_week" field here that holds the data for 7 days
 
     def __str__(self):
         """Returns the title of the weeks training"""
@@ -49,13 +53,28 @@ class TrainingWeek(models.Model):
 
 class TrainingDay(models.Model):
     """Holds TrainingEvent's withi a TrainingDay in a given TrainingWeek"""
-    session = models.ManyToManyField(TrainingEvent)
+    DAY_CHOICES = [
+        (0, 'Monday'),
+        (1, 'Tuesday'),
+        (2, 'Wednesday'),
+        (3, 'Thursday'),
+        (4, 'Friday'),
+        (5, 'Saturday'),
+        (6, 'Sunday'),
+    ]
+
+    session = models.ManyToManyField(TrainingEvent, blank=True)
     training_date = models.DateField()
     training_week = models.ForeignKey(TrainingWeek, on_delete=models.CASCADE)
+    day_of_week = models.IntegerField(choices=DAY_CHOICES, default=0)
+    session_workout = models.ForeignKey(
+        Workout, related_name='training_days', on_delete=models.CASCADE,
+        null=True, blank=True,
+        )
 
     def __str__(self):
         """Returns a string representation of the date"""
-        return f"{self.training_date}"
+        return f"{self.get_day_of_week_display()} - {self.training_date}"
 
 
 class TrainingProgram(models.Model):
