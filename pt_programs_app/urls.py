@@ -6,5 +6,6 @@ from . import views
 app_name = 'pt_programs_app'
 urlpatterns = [
     # Metrics dashboard
-    path('', views.programsHome, name='programs')
+    path('', views.programsHome, name='programs'),
+    path('create_program/', views.createProgram, name='create_program'),
 ]

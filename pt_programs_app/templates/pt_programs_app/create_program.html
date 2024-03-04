@@ -1,0 +1,23 @@
+{% extends "pt_programs_app/pt_programs_base.html" %}
+
+{% block content %}
+
+<p>
+    <a href="{% url 'pt_programs_app:programs' %}">Programs Home</a>
+    <a href="{% url 'pt_programs_app:create_program' %}">Create Program</a>
+</p>
+
+<div class="create_program_container">
+    <div class="create_program_form">
+        <h4>Build your program</h4>
+        <form action="{% url 'pt_programs_app:create_program' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button name="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+
+{% endblock content %}

@@ -14,67 +14,11 @@ from workout_hub_app.models import Workout
 #  practically functions as a tag for the type of activity focused on in a given workout
 class ActivityType(models.Model):
     """Type name for different training activities"""
-    activity = models.CharField(max_length=50, unique=True)
+    title = models.CharField(max_length=50, unique=True)
 
     def __str__(self):
         """Returns string representation of tag"""
-        return self.activity
-
-
-class TrainingEvent(models.Model):
-    """Representation details of one event in a days training"""
-    event_activity = models.ManyToManyField(ActivityType, blank=True)
-    MORNING = 'morning'
-    EVENING = 'evening'
-    TRAINING_BLOCK_CHOICES = [
-        (MORNING, 'Morning training'),
-        (EVENING, 'Evening training'),
-    ]
-    event_block = models.CharField(max_length=7, choices=TRAINING_BLOCK_CHOICES)
-    # Somehow needs to connect to the the workout to store workout information.
-
-    def __str__(self):
-        """Returns which event block is being specified"""
-        return self.event_block
-
-
-class TrainingWeek(models.Model):
-    """Representation of a full week of training"""
-    week_title = models.CharField(max_length=100)
-    week_description = models.CharField(max_length=200)
-    week_start_date = models.DateField()
-    # Call this field days_in_week = 7
-    #  "days_in_week" field here that holds the data for 7 days
-
-    def __str__(self):
-        """Returns the title of the weeks training"""
-        return self.week_title
-
-
-class TrainingDay(models.Model):
-    """Holds TrainingEvent's withi a TrainingDay in a given TrainingWeek"""
-    DAY_CHOICES = [
-        (0, 'Monday'),
-        (1, 'Tuesday'),
-        (2, 'Wednesday'),
-        (3, 'Thursday'),
-        (4, 'Friday'),
-        (5, 'Saturday'),
-        (6, 'Sunday'),
-    ]
-
-    session = models.ManyToManyField(TrainingEvent, blank=True)
-    training_date = models.DateField()
-    training_week = models.ForeignKey(TrainingWeek, on_delete=models.CASCADE)
-    day_of_week = models.IntegerField(choices=DAY_CHOICES, default=0)
-    session_workout = models.ForeignKey(
-        Workout, related_name='training_days', on_delete=models.CASCADE,
-        null=True, blank=True,
-        )
-
-    def __str__(self):
-        """Returns a string representation of the date"""
-        return f"{self.get_day_of_week_display()} - {self.training_date}"
+        return self.title
 
 
 class TrainingProgram(models.Model):
@@ -82,15 +26,13 @@ class TrainingProgram(models.Model):
     program_name = models.CharField(max_length=100)
     owner = models.ForeignKey(User, on_delete=models.CASCADE)
 
-    # Duration details and weekly layout.
     program_duration = models.PositiveIntegerField() # Duration in weeks
     start_date = models.DateField()
     end_date = models.DateField(null=True, blank=True)
-    weekly_layout = models.ManyToManyField(TrainingWeek, blank=True)
 
-    # Extra program specific details.
     program_details = models.TextField(blank=True)
     program_notes = models.TextField(blank=True)
+    activity = models.ManyToManyField(ActivityType, blank=True)
 
     def clean(self):
         # Ensure program_duration is valid.
@@ -110,3 +52,62 @@ class TrainingProgram(models.Model):
     def __str__(self):
         """Returns the program name"""
         return self.program_name
+
+
+class TrainingWeek(models.Model):
+    """Representation of a full week of training"""
+    program = models.ForeignKey(TrainingProgram, on_delete=models.CASCADE, related_name='training_weeks', null=True)
+    week_title = models.CharField(max_length=100)
+    week_description = models.CharField(max_length=200)
+    week_start_date = models.DateField() #Determined in the views
+
+    def __str__(self):
+        """Returns the title of the weeks training"""
+        return self.week_title
+
+
+class TrainingEvent(models.Model):
+    """Representation details of one event in a days training"""
+    event_activity = models.ManyToManyField(ActivityType, blank=True)
+    DAY_CHOICES = [
+        (0, 'Monday'),
+        (1, 'Tuesday'),
+        (2, 'Wednesday'),
+        (3, 'Thursday'),
+        (4, 'Friday'),
+        (5, 'Saturday'),
+        (6, 'Sunday'),
+    ]
+    day_of_week = models.IntegerField(choices=DAY_CHOICES, default=0)
+    MORNING = 'morning'
+    EVENING = 'evening'
+    TRAINING_BLOCK_CHOICES = [
+        (MORNING, 'Morning training'),
+        (EVENING, 'Evening training'),
+    ]
+    event_block = models.CharField(max_length=7, choices=TRAINING_BLOCK_CHOICES)
+    session_workout = models.ForeignKey(
+        Workout, related_name='training_days', on_delete=models.CASCADE,
+        null=True, blank=True,
+        )
+
+
+    def __str__(self):
+        """Returns which event block is being specified"""
+        return self.event_block
+
+
+# class TrainingDay(models.Model):
+#     """Holds TrainingEvent's withi a TrainingDay in a given TrainingWeek"""
+#     session = models.ManyToManyField(TrainingEvent, blank=True)
+#     training_date = models.DateField()
+
+#     training_week = models.ForeignKey(TrainingWeek, on_delete=models.CASCADE)
+#     session_workout = models.ForeignKey(
+#         Workout, related_name='training_days', on_delete=models.CASCADE,
+#         null=True, blank=True,
+#         )
+
+#     def __str__(self):
+#         """Returns a string representation of the date"""
+#         return f"{self.get_day_of_week_display()} - {self.training_date}"

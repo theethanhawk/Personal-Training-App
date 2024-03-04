@@ -1,8 +1,10 @@
 {% extends "pt_programs_app/pt_programs_base.html" %}
 
 {% block content %}
-
-<p>Programs</p>
+<p>
+    <a href="{% url 'pt_programs_app:programs' %}">Programs Home</a>
+    <a href="{% url 'pt_programs_app:create_program' %}">Create Program</a>
+</p>
 
 <p>
     Work with programs here
