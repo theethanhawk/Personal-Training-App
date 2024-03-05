@@ -1,0 +1,44 @@
+{% extends "pt_programs_app/pt_programs_base.html" %}
+
+{% block content %}
+
+<p>
+    <a href="{% url 'pt_programs_app:programs' %}">Programs Home</a>
+    <a href="{% url 'pt_programs_app:create_program' %}">Create Program</a>
+</p>
+
+<div class="program-details-container">
+    <div class="program-content">
+        {{ program.program_name }}
+    </div>
+    <div>
+        Program duration: {{ program.program_duration }} weeks.
+    </div>
+    <div>
+        Program starts: {{ program.start_date }}
+    </div>
+    <div>
+        Program details: {{ program.program_details }}
+    </div>
+    <div class="program-activites">
+        Activites that will be part of this program:
+        <ul>
+            {% for a in program.activity.all %}
+                <li>{{ a.title }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <a>Continue Building Program</a>
+</div>
+
+<h2>Build Program Weeks</h2>
+<form method="post" action="{% url 'pt_programs_app:build_program_weeks' %}">
+  {% csrf_token %}
+  {% for form in forms %}
+    {{ form.as_p }}
+  {% endfor %}
+  <button type="submit">Submit</button>
+</form>
+
+
+{% endblock content %}
