@@ -32,7 +32,7 @@
 </div>
 
 <h2>Build Program Weeks</h2>
-<form method="post" action="{% url 'pt_programs_app:build_program_weeks' %}">
+<form method="post" action="{% url 'pt_programs_app:build_program_weeks' pk=program.pk %}">
   {% csrf_token %}
   {% for form in forms %}
     {{ form.as_p }}
