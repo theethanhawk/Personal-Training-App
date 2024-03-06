@@ -46,7 +46,7 @@ class TrainingProgram(models.Model):
         self.full_clean()  # Validate model before saving
         # Calculate end_date based on start_date and program_duration
         if self.start_date and self.program_duration is not None:
-            self.end_date = self.start_date + timedelta(days=self.program_duration * 7)
+            self.end_date = self.start_date + timedelta(days=self.program_duration * 7 - 1)
         super(TrainingProgram, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -60,6 +60,29 @@ class TrainingWeek(models.Model):
     week_title = models.CharField(max_length=100)
     week_description = models.CharField(max_length=200)
     week_start_date = models.DateField() #Determined in the views
+    week_number = models.PositiveIntegerField(null=True) 
+
+    def calculate_week_start_date(self):
+        self.week_number = self.program.program_duration
+        week_count = 0
+    
+        if self.program and self.program.start_date:
+            while week_count < self.week_number:
+                print(week_count)
+                days_offset = week_count * 7
+                self.week_start_date = self.program.start_date + timedelta(days=days_offset)
+                print(days_offset)
+                week_count += 1
+
+
+    # def calculate_week_start_date(self):
+    #     if self.program and self.program.start_date:
+    #         self.week_number = self.program.program_duration
+    #         print(self.week_number)
+    #         # Calculates for Week 1 set to day 0 (start_date), week 2 to day 7, etc.
+    #         days_offset = (self.week_number - 1) * 7
+    #         self.week_start_date = self.program.start_date + timedelta(days=days_offset)
+        
 
     def __str__(self):
         """Returns the title of the weeks training"""

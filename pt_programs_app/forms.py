@@ -28,6 +28,8 @@ class TrainingProgramForm(forms.ModelForm):
 
 
 class TrainingWeekForm(forms.ModelForm):
+    week_number = forms.IntegerField(widget=forms.HiddenInput(), required=False)
+
     class Meta:
         model = TrainingWeek
         fields = ['week_title', 'week_description']

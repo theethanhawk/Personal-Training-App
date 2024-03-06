@@ -55,6 +55,7 @@ def build_program_weeks(request, pk):
     if request.method != 'POST':
         # Create a list of TrainingWeekForm instances based on the number of weeks in the program.
         forms = [TrainingWeekForm(prefix=str(i)) for i in range(weeks)]
+        forms = [TrainingWeekForm(prefix=str(i), initial={'week_number': i + 1}) for i in range(weeks)]
 
         context = {
             'program': program,
@@ -69,12 +70,13 @@ def build_program_weeks(request, pk):
 
         # Loop through each week's form in the request data.
         for i in range(weeks):
-            form = TrainingWeekForm(request.POST, prefix=str(i))
+            form = TrainingWeekForm(request.POST, prefix=str(i), initial={'week_number': i + 1})
             
             if form.is_valid():
                 # If the form is valid, save it to the list of form instances.
                 week_instance = form.save(commit=False)
                 week_instance.program = program  # Associate the week with the correct program
+                week_instance.calculate_week_start_date()  # Calculate week_start_date
                 week_instance.save()
                 form_instances.append(week_instance)
 
