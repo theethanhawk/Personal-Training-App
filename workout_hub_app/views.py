@@ -27,6 +27,30 @@ def create_workout(request):
         'workout_form': workout_form
     })
 
+def edit_workout(request, workout_id):
+    workout = Workout.objects.get(pk=workout_id)
+
+    if request.method == 'POST':
+        if 'workout_submit' in request.POST:
+            workout_form = WorkoutForm(request.POST, instance=workout)
+            if workout_form.is_valid():
+                workout_form.save()
+                return JsonResponse({'success': True})
+            else:
+                return JsonResponse({'success': False, 'errors': workout_form.errors})
+    
+    else:
+        workout_form = WorkoutForm(instance=workout)
+
+    return render(request, 'workout_hub_app/edit_workout.html', {
+        'workout_form': workout_form,
+        'workout': workout
+    })
+
+def delete_workout(request, workout_id):        
+    workout = Workout.objects.get(pk=workout_id)
+    workout.delete()
+    return JsonResponse({'success': True})
 
 def workouts_dashboard(request):
     workout_data = Workout.objects.all().order_by('-date')
